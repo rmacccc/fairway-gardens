@@ -96,6 +96,18 @@ h2{font-size:clamp(1.5rem,4.6vw,2.1rem);margin-bottom:8px}
 .svc svg{width:30px;height:30px;stroke:var(--deep);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .note{margin-top:22px;color:var(--body);font-size:.95rem}
 
+/* work gallery */
+.work{background:var(--cream)}
+.work figure{margin:0 0 20px;position:relative}
+.work img{width:100%;height:auto;display:block;border-radius:12px;border:3px solid var(--deep)}
+.work .tag{position:absolute;top:12px;left:12px;background:var(--deep);color:var(--cream);
+  font-weight:800;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 12px;border-radius:999px}
+.work .tag.after{background:var(--gold);color:var(--deep)}
+.work figcaption{display:none}
+.work .cap{color:var(--body);font-size:.95rem;margin:-6px 0 34px}
+.work h3{font-family:"Playfair Display",Georgia,serif;color:var(--deep);font-size:1.2rem;margin:0 0 14px}
+
 /* steps */
 .steps{background:var(--deep);color:var(--cream)}
 .steps h2{color:var(--cream)}
@@ -253,6 +265,22 @@ footer{background:var(--deep);color:var(--cream);text-align:center;padding:18px;
       <li><span class="ic"><svg viewBox="-20 -20 40 40"><path d="M-17,-6 L11,-6 L6,7 L-12,7 Z"/><circle cx="-3" cy="14" r="5"/><path d="M6,7 L10,14"/><path d="M11,-6 L18,-10"/></svg></span>General tidy-ups</li>
     </ul>
     <p class="note">All equipment provided. Green waste goes in your brown bin or is bagged neatly for collection.</p>
+  </div>
+</section>
+
+<div class="stripes" aria-hidden="true"></div>
+
+<section class="work">
+  <div class="wrap">
+    <h2>Our work</h2>
+    <div class="rule"></div>
+
+    <h3>Full lawn restoration</h3>
+    <figure><span class="tag">Before</span><img src="work-before.jpg" alt="Patchy, mossy lawn with old slab path before restoration" width="1100" height="552" loading="lazy"></figure>
+    <figure><span class="tag">During</span><img src="work-during.jpg" alt="Lawn stripped back and levelled during restoration" width="1100" height="781" loading="lazy"></figure>
+    <figure><span class="tag after">After</span><img src="work-after.jpg" alt="Finished lawn with fresh mown stripes under a willow tree" width="1100" height="859" loading="lazy"></figure>
+    <p class="cap">Tired, patchy grass stripped back, levelled, re-seeded and brought back as a striped lawn.</p>
+
   </div>
 </section>
 
