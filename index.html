@@ -123,6 +123,27 @@ h2{font-size:clamp(1.5rem,4.6vw,2.1rem);margin-bottom:8px}
 .work .cap{color:var(--body);font-size:.95rem;margin:-6px 0 34px}
 .work h3{font-family:"Playfair Display",Georgia,serif;color:var(--deep);font-size:1.2rem;margin:0 0 14px}
 
+/* before/after slider */
+.ba{position:relative;width:100%;border-radius:12px;border:3px solid var(--deep);
+  overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:ew-resize;margin-bottom:8px}
+.ba img{display:block;width:100%;height:auto;pointer-events:none;-webkit-user-drag:none}
+.ba .top{position:absolute;inset:0;overflow:hidden;width:50%}
+.ba .top img{position:absolute;top:0;left:0;height:100%;width:auto;max-width:none}
+.ba .handle{position:absolute;top:0;bottom:0;left:50%;width:4px;background:var(--cream);
+  transform:translateX(-2px);pointer-events:none;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.ba .knob{position:absolute;top:50%;left:50%;width:46px;height:46px;margin:-23px 0 0 -23px;
+  border-radius:50%;background:var(--gold);border:3px solid var(--deep);pointer-events:none;
+  display:flex;align-items:center;justify-content:center;gap:3px}
+.ba .knob span{display:block;width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent}
+.ba .knob .l{border-right:8px solid var(--deep)}
+.ba .knob .r{border-left:8px solid var(--deep)}
+.ba .lab{position:absolute;top:12px;font-weight:800;font-size:.72rem;letter-spacing:.14em;
+  text-transform:uppercase;padding:5px 11px;border-radius:999px;pointer-events:none}
+.ba .lab.b{left:12px;background:var(--deep);color:var(--cream)}
+.ba .lab.a{right:12px;background:var(--gold);color:var(--deep)}
+.ba:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.hint{color:var(--body);font-size:.86rem;margin:0 0 26px;text-align:center}
+
 /* steps */
 .steps{background:var(--deep);color:var(--cream)}
 .steps h2{color:var(--cream)}
@@ -291,6 +312,19 @@ footer{background:var(--deep);color:var(--cream);text-align:center;padding:18px;
     <div class="rule"></div>
 
     <h3>Full lawn restoration</h3>
+
+    <div class="ba" id="ba1" role="slider" tabindex="0" aria-label="Drag to compare before and after"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+      <img src="slide-after.jpg" alt="The same garden after restoration, with a striped, freshly mown lawn" width="1400" height="816">
+      <div class="top" id="ba1top">
+        <img src="slide-before.jpg" alt="The garden before restoration, with shaggy, uneven grass" width="1400" height="816">
+      </div>
+      <span class="lab b">Before</span>
+      <span class="lab a">After</span>
+      <div class="handle"><span class="knob"><span class="l"></span><span class="r"></span></span></div>
+    </div>
+    <p class="hint">Drag the slider — or tap either side — to see the difference.</p>
+
     <figure><span class="tag">Before</span><a href="#shot-before" aria-label="View larger photo"><img src="work-before.jpg" alt="Patchy, weedy lawn with exposed slabs before restoration" width="1600" height="900" loading="lazy"></a></figure>
     <figure><span class="tag">During</span><a href="#shot-during" aria-label="View larger photo"><img src="work-during.jpg" alt="Lawn stripped back and levelled during restoration" width="1600" height="900" loading="lazy"></a></figure>
     <figure><span class="tag after">After</span><a href="#shot-after" aria-label="View larger photo"><img src="work-after.jpg" alt="Finished lawn with fresh mown stripes under a willow tree" width="1600" height="900" loading="lazy"></a></figure>
@@ -343,6 +377,48 @@ footer{background:var(--deep);color:var(--cream);text-align:center;padding:18px;
 <div class="lb" id="shot-before"><a class="lb-bg" href="#our-work" aria-label="Close"></a><img src="work-before.jpg" alt="Patchy, weedy lawn with exposed slabs before restoration"><a class="lb-close" href="#our-work" aria-label="Close">&times;</a></div>
 <div class="lb" id="shot-during"><a class="lb-bg" href="#our-work" aria-label="Close"></a><img src="work-during.jpg" alt="Lawn stripped back and levelled during restoration"><a class="lb-close" href="#our-work" aria-label="Close">&times;</a></div>
 <div class="lb" id="shot-after"><a class="lb-bg" href="#our-work" aria-label="Close"></a><img src="work-after.jpg" alt="Finished lawn with fresh mown stripes under a willow tree"><a class="lb-close" href="#our-work" aria-label="Close">&times;</a></div>
+
+<script>
+(function(){
+  var el = document.getElementById('ba1');
+  if(!el) return;
+  var top = document.getElementById('ba1top'),
+      handle = el.querySelector('.handle'),
+      inner = top.querySelector('img'),
+      pct = 50, dragging = false;
+
+  function sizeInner(){ inner.style.width = el.clientWidth + 'px'; }
+  function set(p){
+    pct = Math.max(0, Math.min(100, p));
+    top.style.width = pct + '%';
+    handle.style.left = pct + '%';
+    el.setAttribute('aria-valuenow', Math.round(pct));
+  }
+  function fromEvent(e){
+    var r = el.getBoundingClientRect(),
+        x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+    set(x / r.width * 100);
+  }
+
+  el.addEventListener('pointerdown', function(e){
+    dragging = true; el.setPointerCapture(e.pointerId); fromEvent(e);
+  });
+  el.addEventListener('pointermove', function(e){ if(dragging) fromEvent(e); });
+  el.addEventListener('pointerup',   function(){ dragging = false; });
+  el.addEventListener('pointercancel', function(){ dragging = false; });
+
+  el.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowLeft'){ set(pct - 5); e.preventDefault(); }
+    if(e.key === 'ArrowRight'){ set(pct + 5); e.preventDefault(); }
+    if(e.key === 'Home'){ set(0); e.preventDefault(); }
+    if(e.key === 'End'){ set(100); e.preventDefault(); }
+  });
+
+  window.addEventListener('resize', sizeInner);
+  if(inner.complete) sizeInner(); else inner.addEventListener('load', sizeInner);
+  sizeInner(); set(50);
+})();
+</script>
 
 </body>
 </html>
