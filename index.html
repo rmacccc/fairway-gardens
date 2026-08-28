@@ -126,7 +126,8 @@ h2{font-size:clamp(1.5rem,4.6vw,2.1rem);margin-bottom:8px}
 /* before/after slider */
 .ba{position:relative;width:100%;border-radius:12px;border:3px solid var(--deep);
   overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:ew-resize;margin-bottom:8px}
-.ba img{display:block;width:100%;height:auto;pointer-events:none;-webkit-user-drag:none}
+.ba img{display:block;width:100%;height:auto;pointer-events:none;-webkit-user-drag:none;
+  border:0;border-radius:0;aspect-ratio:auto;object-fit:fill}
 .ba .top{position:absolute;inset:0;overflow:hidden;width:50%}
 .ba .top img{position:absolute;top:0;left:0;height:100%;width:auto;max-width:none}
 .ba .handle{position:absolute;top:0;bottom:0;left:50%;width:4px;background:var(--cream);
